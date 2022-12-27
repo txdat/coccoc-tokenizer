@@ -3,3 +3,6 @@ install
 python/*.c
 python/*.cpp
 python/*.html
+python/build
+python/dist
+python/*.egg-info

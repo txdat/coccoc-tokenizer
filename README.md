@@ -164,21 +164,25 @@ $ LD_LIBRARY_PATH=build java -cp build/coccoc-tokenizer.jar com.coccoc.Tokenizer
 
 Normally `LD_LIBRARY_PATH` should point to a directory with `libcoccoc_tokenizer_jni.so` binary. If you have already installed deb package or `make install`-ed everything into your system, `LD_LIBRARY_PATH` is not needed as the binary will be taken from your system (`/usr/lib` or similar).
 
-## Using Python bindings
+## Using Python binding
 
 ```python
-from CocCocTokenizer import PyTokenizer
+import sys
+
+sys.path.append("python/build/lib.linux-x86_64-cpython-310")  # includes "*.so" file
+
+from CocCocTokenizer import PyTokenizer  # type: ignore
 
 # load_nontone_data is True by default
-T = PyTokenizer(load_nontone_data=True)
+tokenizer = PyTokenizer(load_nontone_data=True)
 
 # tokenize_option:
 # 	0: TOKENIZE_NORMAL (default)
 #	1: TOKENIZE_HOST
 #	2: TOKENIZE_URL
-print(T.word_tokenize("xin chào, tôi là người Việt Nam", tokenize_option=0))
+print(tokenizer.word_tokenize("Quân đội Hàn Quốc bị phê bình vì bắn trượt hết máy bay không người lái Triều Tiên", tokenize_option=0))
 
-# output: ['xin', 'chào', ',', 'tôi', 'là', 'người', 'Việt_Nam']
+# output: ['Quân_đội', 'Hàn_Quốc', 'bị', 'phê_bình', 'vì', 'bắn', 'trượt', 'hết', 'máy_bay', 'không', 'người', 'lái', 'Triều_Tiên']
 ```
 
 ## Other languages
@@ -195,6 +199,8 @@ The benchmark is done on a typical laptop with Intel Core i5-5200U processor:
 - Processing time: **41** seconds
 - Speed: **15M** characters / second, or **2.5M** tokens / second
 - RAM consumption is around **300Mb**
+
+The python binding tokenizes Vietnamese Wikipedia (4991991 lines) in ~32 seconds (on AMD Ryzen 7 6800HS laptop)
 
 ## Quality Comparison
 
